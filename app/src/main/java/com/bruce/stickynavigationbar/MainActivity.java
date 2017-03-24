@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements StickyNavHost.Tab
     private void initView() {
         mListView = (ListView) findViewById(R.id.list_view);
         stickyNavHostRoot = (StickyNavHost) findViewById(R.id.sticky_nav_layout);
+        stickyNavHostRoot.setVisibility(View.INVISIBLE);
 
         View testHeaderView = LayoutInflater.from(this).inflate(R.layout.listview_head_view_test_layout, null);
         mListView.addHeaderView(testHeaderView);
