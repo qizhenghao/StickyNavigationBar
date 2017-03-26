@@ -14,7 +14,7 @@ import java.lang.annotation.RetentionPolicy;
 public class NavBean {
 
     public static int TYPE_CURRENT;
-    public static boolean IS_XIFU = true;
+    public static boolean IS_NEED_ATTACH = true;        //是否需要吸附
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({TYPE_GIFT, TYPE_COMMENT, TYPE_LIKE})
@@ -30,7 +30,7 @@ public class NavBean {
         this.adapter = adapter;
         switch (type) {
             case TYPE_GIFT:
-                title = "礼物";
+                title = "转发";
                 break;
             case TYPE_COMMENT:
                 title = "评论";
@@ -43,17 +43,35 @@ public class NavBean {
 
     public BaseAdapter adapter;
     public String title;
-    public int count;
-    public int type;                    //参考TYPE
+    public int count;                       //展示的数据量
+    public int type;                        //参考TYPE
 
-    public boolean hasMore = false;                          // 是否可以加载更多
-    public boolean isRefresh = true;                  // 是否是刷新
+    public boolean hasMore = false;         // 是否可以加载更多
+    public boolean isRefresh = true;        // 是否是刷新
     public int pageNo = 1;
     public int pageSize = 10;
 
-    public int firstVisibleItem;
-    public int topDistance;
-    public static int topDistanceUniversal;
-    public static int firstVisibleItemUniversal;
+    private int firstVisibleItem;           //第一条可见的位置
+    private int topDistance;                //距离顶部的位置
+    public static int topDistanceUniversal;       //存储上一次的
+    public static int firstVisibleItemUniversal;  //存储上一次的
 
+
+    public int getFirstVisibleItem() {
+        return firstVisibleItem;
+    }
+
+    public int getTopDistance() {
+        return topDistance;
+    }
+
+    public void setTopDistance(int topDistance) {
+        this.topDistance = topDistance;
+        topDistanceUniversal = topDistance;
+    }
+
+    public void setFirstVisibleItem(int firstVisibleItem) {
+        this.firstVisibleItem = firstVisibleItem;
+        firstVisibleItemUniversal = firstVisibleItem;
+    }
 }

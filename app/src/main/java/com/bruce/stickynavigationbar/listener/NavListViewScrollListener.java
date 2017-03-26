@@ -13,15 +13,19 @@ import com.bruce.stickynavigationbar.bean.NavBean;
 public class NavListViewScrollListener implements AbsListView.OnScrollListener {
 
     private NavBean nav;
-    private View xifuView;
+    private View rootView;
     private View headView;
-    private int[] xifuLocation = new int[2], headLocation = new int[2];
+    private int[] rootLocation = new int[2], headLocation = new int[2];
 
-    public NavListViewScrollListener(View xifuView, View headView) {
-        this.xifuView = xifuView;
+    public NavListViewScrollListener(View rootView, View headView) {
+        this.rootView = rootView;
         this.headView = headView;
     }
 
+    /**
+     * 设置当前选中的nav
+     * @param nav
+     */
     public void setNav(NavBean nav) {
         this.nav = nav;
     }
@@ -32,20 +36,21 @@ public class NavListViewScrollListener implements AbsListView.OnScrollListener {
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        //处理了吸附view的显示与隐藏, 本质上只是控制吸附view的显示，而在listview的headerView中的导航栏不做处理
-        if (NavBean.IS_XIFU && xifuView != null && nav != null) {
-            xifuView.getLocationOnScreen(xifuLocation);
+        //处理了root导航栏的显示与隐藏, 本质上只是控制root导航栏的显示
+        //而在listView的headerView中的导航栏不做处理，因为它会随着listView的滑动自行滑出页面
+        if (NavBean.IS_NEED_ATTACH && rootView != null && nav != null) {
+            rootView.getLocationOnScreen(rootLocation);
             headView.getLocationOnScreen(headLocation);
-            if (xifuLocation[1] > headLocation[1]) {
-                xifuView.setVisibility(View.VISIBLE);
+            //根据两者在屏幕中的location位置信息，决定root导航栏的显示与隐藏
+            if (rootLocation[1] > headLocation[1]) {
+                rootView.setVisibility(View.VISIBLE);
             } else {
-                xifuView.setVisibility(View.INVISIBLE);
+                rootView.setVisibility(View.INVISIBLE);
             }
-            nav.firstVisibleItem = firstVisibleItem;
-            NavBean.firstVisibleItemUniversal = nav.firstVisibleItem;
-            View v = view.getChildAt(0);
-            nav.topDistance = (v == null) ? 0 : v.getTop();
-            NavBean.topDistanceUniversal = nav.topDistance;
+
+            //记录当前listView的滑动位置
+            nav.setFirstVisibleItem(firstVisibleItem);
+            nav.setTopDistance((view.getChildAt(0) == null) ? 0 : view.getChildAt(0).getTop());
         }
     }
 }

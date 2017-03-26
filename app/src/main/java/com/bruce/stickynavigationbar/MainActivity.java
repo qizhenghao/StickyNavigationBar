@@ -5,11 +5,7 @@ import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.bruce.stickynavigationbar.adapter.TestAdapter;
 import com.bruce.stickynavigationbar.bean.NavBean;
@@ -17,20 +13,17 @@ import com.bruce.stickynavigationbar.listener.NavListViewScrollListener;
 import com.bruce.stickynavigationbar.view.StickNavHostSubject;
 import com.bruce.stickynavigationbar.view.StickyNavHost;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity implements StickyNavHost.TabItemClickListener {
 
     private static final int NAV_LENGTH = 3;
-    private int STICKY_POSITION;
+    private int STICKY_POSITION_IN_HEADER;
     private ListView mListView;
-    private StickyNavHost stickyNavHostRoot;
-    private StickyNavHost stickyNavHostHead;
+    private StickyNavHost stickyNavHostRoot;//根布局中的导航栏，表现为ListView上滑吸附在顶部
+    private StickyNavHost stickyNavHostHead;//添加在ListView的headerView中的导航栏
 
-    private StickNavHostSubject stickNavHostSubject;
-    private SparseArray<NavBean> mNavs;
-    private NavListViewScrollListener scrollListener;
+    private StickNavHostSubject stickNavHostSubject;//观察者，用于管理两个导航栏
+    private SparseArray<NavBean> mNavs;             //导航栏的多个tab数据
+    private NavListViewScrollListener scrollListener;//给ListView设置的滑动事件，里面处理了导航栏的显示与隐藏
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,24 +80,24 @@ public class MainActivity extends AppCompatActivity implements StickyNavHost.Tab
         stickyNavHostHead = (StickyNavHost) inflateView.findViewById(R.id.sticky_nav_layout);
         stickyNavHostHead.setVisibility(View.VISIBLE);
         mListView.addHeaderView(stickyNavHostHead);
-        STICKY_POSITION = mListView.getHeaderViewsCount();
+        STICKY_POSITION_IN_HEADER = mListView.getHeaderViewsCount();
     }
 
     @Override
     public void onTabItemSelected(@NavBean.TYPE int type) {
         NavBean currNav = mNavs.get(type);
-        stickNavHostSubject.setSelectedType(type);
-        if (currNav.type == NavBean.TYPE_CURRENT)
+        stickNavHostSubject.setSelectedType(type);//事件分发给注册者，注册者进行相应的变化
+        if (currNav.type == NavBean.TYPE_CURRENT)//等于当前选中的tab，可以屏蔽掉
             return;
         NavBean.TYPE_CURRENT = currNav.type;
         scrollListener.setNav(currNav);
         mListView.setAdapter(currNav.adapter);
-        if (stickyNavHostRoot.getVisibility() == View.VISIBLE) {//吸附在顶部的view正在展示
-            if (currNav.firstVisibleItem < STICKY_POSITION)
-                mListView.setSelectionFromTop(STICKY_POSITION, stickyNavHostRoot.getHeight() - 2);
+        if (stickyNavHostRoot.getVisibility() == View.VISIBLE) {//吸附在顶部的rootView正在展示
+            if (currNav.getFirstVisibleItem() < STICKY_POSITION_IN_HEADER)
+                mListView.setSelectionFromTop(STICKY_POSITION_IN_HEADER, stickyNavHostRoot.getHeight() - 2);
             else
-                mListView.setSelectionFromTop(currNav.firstVisibleItem, currNav.topDistance);
-        } else {
+                mListView.setSelectionFromTop(currNav.getFirstVisibleItem(), currNav.getTopDistance());
+        } else {//吸附在顶部的rootView没有展示，说明在切换导航栏的时候是不需要进行滑动的，保持上次的位置即可
             mListView.setSelectionFromTop(NavBean.firstVisibleItemUniversal, NavBean.topDistanceUniversal);
         }
     }

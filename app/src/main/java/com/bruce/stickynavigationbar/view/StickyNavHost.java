@@ -16,8 +16,6 @@ import com.bruce.stickynavigationbar.bean.NavBean;
 
 public class StickyNavHost extends ViewGroup implements IStickyNavHostObserver {
 
-    private static final int TAB_COUNT = 3;
-
     private TabItemClickListener mTabItemClickListener;
 
     private TabItem[] tabs;
@@ -49,8 +47,8 @@ public class StickyNavHost extends ViewGroup implements IStickyNavHostObserver {
     }
 
     /**
-     * 设置导航栏各个title
-     * @param navs
+     * 初始化导航栏数据
+     * @param navs，会按照给定的数组顺序进行排列
      */
     public void initTabData(NavBean[] navs) {
         initTabs(navs.length);
@@ -83,6 +81,10 @@ public class StickyNavHost extends ViewGroup implements IStickyNavHostObserver {
         }
     }
 
+    /**
+     * 设置是否显示顶部的描边
+     * @param isShow
+     */
     public void setShowTopLine(boolean isShow) {
         this.showTopLine = isShow;
     }
@@ -99,6 +101,10 @@ public class StickyNavHost extends ViewGroup implements IStickyNavHostObserver {
         }
     }
 
+    /**
+     * 根据排列位置，切换显示的Tab
+     * @param position
+     */
     public void setSelectedPosition(int position) {
         setSelectedItem(tabs[position]);
     }
