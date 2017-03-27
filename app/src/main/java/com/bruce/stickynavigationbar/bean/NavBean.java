@@ -17,10 +17,10 @@ public class NavBean {
     public static boolean IS_NEED_ATTACH = true;        //是否需要吸附
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({TYPE_GIFT, TYPE_COMMENT, TYPE_LIKE})
+    @IntDef({TYPE_REPOST, TYPE_COMMENT, TYPE_LIKE})
     public @interface TYPE {
     }
-    public static final int TYPE_GIFT = 1;
+    public static final int TYPE_REPOST = 1;
     public static final int TYPE_COMMENT = 2;
     public static final int TYPE_LIKE = 3;
 
@@ -29,7 +29,7 @@ public class NavBean {
         this.type = type;
         this.adapter = adapter;
         switch (type) {
-            case TYPE_GIFT:
+            case TYPE_REPOST:
                 title = "转发";
                 break;
             case TYPE_COMMENT:

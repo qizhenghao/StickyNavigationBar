@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements StickyNavHost.Tab
         stickNavHostSubject.attachObserver(stickyNavHostHead);
 
         NavBean[] sortedNavs = new NavBean[mNavs.size()];//指定导航栏的排列顺序
-        sortedNavs[0] = mNavs.get(NavBean.TYPE_GIFT);
+        sortedNavs[0] = mNavs.get(NavBean.TYPE_REPOST);
         sortedNavs[1] = mNavs.get(NavBean.TYPE_COMMENT);
         sortedNavs[2] = mNavs.get(NavBean.TYPE_LIKE);
         stickNavHostSubject.initTabData(sortedNavs);
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements StickyNavHost.Tab
 
     protected void initNavsData() {
         mNavs = new SparseArray<>(NAV_LENGTH);
-        mNavs.put(NavBean.TYPE_GIFT, new NavBean(NavBean.TYPE_GIFT, new TestAdapter(20, "我是转发", this)));
+        mNavs.put(NavBean.TYPE_REPOST, new NavBean(NavBean.TYPE_REPOST, new TestAdapter(20, "我是转发", this)));
         mNavs.put(NavBean.TYPE_COMMENT, new NavBean(NavBean.TYPE_COMMENT, new TestAdapter(20, "我是评论", this)));
         mNavs.put(NavBean.TYPE_LIKE, new NavBean(NavBean.TYPE_LIKE, new TestAdapter(20, "我是赞", this)));
     }
