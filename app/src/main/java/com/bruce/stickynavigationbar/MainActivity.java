@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements StickyNavHost.Tab
 
     protected void initNavsData() {
         mNavs = new SparseArray<>(NAV_LENGTH);
-        mNavs.put(NavBean.TYPE_GIFT, new NavBean(NavBean.TYPE_GIFT, new TestAdapter(20, "我是礼物", this)));
+        mNavs.put(NavBean.TYPE_GIFT, new NavBean(NavBean.TYPE_GIFT, new TestAdapter(20, "我是转发", this)));
         mNavs.put(NavBean.TYPE_COMMENT, new NavBean(NavBean.TYPE_COMMENT, new TestAdapter(20, "我是评论", this)));
         mNavs.put(NavBean.TYPE_LIKE, new NavBean(NavBean.TYPE_LIKE, new TestAdapter(20, "我是赞", this)));
     }
